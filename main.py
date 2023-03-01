@@ -38,6 +38,7 @@ def Count_C_output_from_T(T_n):
     res = (m_input * C_input) / (m_input - (kt * F * (T_n - Tp)) / (r - Tp * C_tau))
     return res
 
+
 fig, axs = plt.subplots(1, 3)
 
 c1OArr = []
