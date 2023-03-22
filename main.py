@@ -56,6 +56,12 @@ c3IArr = np.arange(T0, T1, deltaT)
 for i in c3IArr:
     c3OArr.append(Count_C_output_from_T(i))
 
+
+print(c1OArr[round(len(c1IArr)-1)])
+print(c2OArr[round(len(c2IArr)-1)])
+print(c3OArr[round(len(c3IArr)-1)])
+
+
 axs[0].plot(c1IArr, c1OArr, "red")
 axs[0].set_title('C_вых(C_вх)')
 
