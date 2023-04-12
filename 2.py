@@ -42,7 +42,6 @@ def count(C_in, C_out, m_in, M, Tv, dt):
     M2 = count_new_M(m_in, m_out, Tv, M, dt)
     dM = count_prime(M2, M, dt)
     C_out2 = count_new_C_out(C_in, C_out, m_in, m_out, M2, dM, dt)
-
     return [C_out2, M2]
 
 
@@ -90,22 +89,17 @@ while time <= borders[1]:
     C_3.append(C_output)
     time += dt
 
-
-
 tt = []
-time = borders[0] - 100
-while time <= borders[1] + 100:
+time = borders[0] - 50
+while time <= borders[1]:
     tt.append(time)
     time += dt
 
 ChC, ChM, ChT = [], [], []
 CCs1, CCs2, CCs3 = [], [], []
-#первые 100 секунд и последние
-for i in range(1000):
-    C_1.append(C_1[len(C_1) - 1]) #конеченое значение
-    C_2.append(C_2[len(C_2) - 1])
-    C_3.append(C_3[len(C_3) - 1])
-    CCs1.append(C_outs[0]) #начальное значение
+# первые 50 секунд
+for i in range(500):
+    CCs1.append(C_outs[0])
     CCs2.append(C_outs[1])
     CCs3.append(C_outs[2])
     ChC.append(C_ins[0])
@@ -115,10 +109,12 @@ C_1 = CCs1 + C_1
 C_2 = CCs2 + C_2
 C_3 = CCs3 + C_3
 
-for i in range(6000):
+for i in range(5000):
     ChC.append(C_ins[0] + deltaC_in)
     ChM.append(m_ins[1] + deltaM_in)
     ChT.append(Tvs[2] + deltaTv)
+
+print(len(C_1), len(tt), len(ChC))
 
 fig, axis = plt.subplots(2, 3)
 
