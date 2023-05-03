@@ -37,15 +37,14 @@ def appendVals(T, a, b):
     t_arr.append(a + b)
 
 
-# initial values
+#
 T_arr, a_arr, b_arr, l_arr, t_arr = [], [], [], [], []
 ts = L / u
 
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
-# computing
 
-# first domain
+# первый проход
 b = -ts / 2  # [-ts/2,0]
 a = -b
 T = countT_0(-2 * u * b)
@@ -59,8 +58,8 @@ while b <= 0:
     b += delta_beta
 ax.scatter(l_arr, t_arr, T_arr, edgecolor="green")
 T_arr, a_arr, b_arr, l_arr, t_arr = [], [], [], [], []
-# second domain
-b = 0
+# второй проход
+b = 0  # [0, (tau_max-ts)/2]
 a = b
 T = countT_inp(2 * b)
 while b <= (tau_max - ts) / 2:
@@ -73,7 +72,7 @@ while b <= (tau_max - ts) / 2:
     b += delta_beta
 ax.scatter(l_arr, t_arr, T_arr, edgecolor="yellow")
 T_arr, a_arr, b_arr, l_arr, t_arr = [], [], [], [], []
-# third domain
+# третий проход
 b = (tau_max - ts) / 2
 a = b
 T = countT_inp(2 * b)
@@ -85,8 +84,8 @@ while b <= tau_max / 2:
         T = findNewT(T, delta_alpha)
         a += delta_alpha
     b += delta_beta
-ax.scatter(l_arr, t_arr, T_arr, marker='^', edgecolors='black')
-print(T_arr)
+ax.scatter(l_arr, t_arr, T_arr, marker='o', edgecolors='black')
+#print(T_arr)
 
 
 plt.show()
