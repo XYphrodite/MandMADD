@@ -9,8 +9,8 @@ sigma_Sqr_0 = 3  #
 alfa_0 = 0.15  #
 
 epsilon = 0.004  #
-A1 = 1  # 1.7  #
-A2 = 1  # 0.32  #
+A1 = 1.68  # 1.7
+A2 = .32  # 0.32
 Ns = 15  #
 
 lamb_3 = 0
@@ -28,7 +28,7 @@ def rand(l1, l2):
 Middle = lambda arr: sum(arr) / len(arr)
 
 
-def Square(arr):
+def Dispersion(arr):
     _sum = 0
     for i in arr:
         _sum += (i - Middle(arr)) ** 2
@@ -39,19 +39,23 @@ def Process(k):
     i = k
     sum2 = 0
     while i < k + Ns:
-        sum2 += rand_arr[i] * math.pow((sigma_Sqr_0 / (alfa_0 * A2 * Square(rand_arr))), 0.5) * A1 * math.exp(
+        sum2 += rand_arr[i] * math.pow((sigma_Sqr_0 / (alfa_0 * A2 * Dispersion(rand_arr))), 0.5) * A1 * math.exp(
             -A2 * alfa_0 * (i - k))
         i += 1
     return (sum2 / Ns) + M_0
 
 
-def Korrel(z, S):
+def Corell(z, S):
     p = 0
     sum3 = 0
     for p in range(len(z) - S):
         sum3 += (z[p] - Middle(z)) * (z[p + S] - Middle(z))
         p += 1
     return sum3 / p
+
+
+def Corell2(S, alpha):
+    return Dispersion(randProcessArr) * math.exp(-alpha * S)
 
 
 def GetRandomArr():
@@ -83,29 +87,26 @@ i = 0
 # random f
 randProcessArr = GetRandomArr()
 
-while abs(Square(randProcessArr) - sigma_Sqr_0) > 0.3:
-    print(Square(randProcessArr))
-    randProcessArr.clear()
-    A2 -= 0.01
-    A1 += 0.01
-    randProcessArr = GetRandomArr()
+oldS = Dispersion(randProcessArr)
+dd = abs(Dispersion(randProcessArr) - sigma_Sqr_0)
+h = 0.1
 
+# co f[i]
 i = 0
-# Korrelate teoretic f[i]
 while i < S:
-    Corr_arr.insert(i, Korrel(randProcessArr, i))
+    Corr_arr.insert(i, Corell(randProcessArr, i))
     i += 1
 
 alfa_f = 0
-i = 0
 Fi = 10000
 
+i = 0
 while Fi > epsilon:
     Fi = 0
     Corr_arr_.clear()
     while i < S:
-        Fi += (Square(randProcessArr) * math.exp(-alfa_f * i) - Corr_arr[i]) ** 2
-        Corr_arr_.insert(i, Square(randProcessArr) * math.exp(-alfa_f * i))
+        Fi += (Corell2(i,alfa_f) - Corr_arr[i]) ** 2
+        Corr_arr_.insert(i, Corell2(i,alfa_f))
         i += 1
     alfa_f += 0.01
     Fi = Fi / S
@@ -113,10 +114,10 @@ while Fi > epsilon:
 
 alfa_f -= 0.01
 
-print("Среднее ряда=", Middle(rand_arr))
-print("Мат.ожидание ряда=", Square(rand_arr))
-print("Среднее случ. функции=", Middle(randProcessArr))
-print("Мат.ожидание функции=", Square(randProcessArr))
+print("Мат. ожидания ряда = ", Middle(rand_arr))
+print("Дисперсия ряда = ", Dispersion(rand_arr))
+print("Мат. ожидание  = ", Middle(randProcessArr))
+print("Дисперсия = ", Dispersion(randProcessArr))
 print("Параметр аппроксимации функции = ", alfa_f)
 
 # graph
