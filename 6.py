@@ -53,13 +53,15 @@ def Korrel(z, S):
         p += 1
     return sum3 / p
 
+
 def GetRandomArr():
-    arr= []
+    arr = []
     i = 0
     while i < N - Ns:
         arr.append(Process(i))
         i += 1
     return arr
+
 
 rand_arr = []
 Corr_arr = []
@@ -81,11 +83,12 @@ i = 0
 # random f
 randProcessArr = GetRandomArr()
 
-if  abs(Square(randProcessArr) - sigma_Sqr_0) > 0.15:
+while abs(Square(randProcessArr) - sigma_Sqr_0) > 0.3:
+    print(Square(randProcessArr))
     randProcessArr.clear()
-    A2-=0.01
+    A2 -= 0.01
+    A1 += 0.01
     randProcessArr = GetRandomArr()
-
 
 i = 0
 # Korrelate teoretic f[i]
